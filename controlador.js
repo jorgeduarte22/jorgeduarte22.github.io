@@ -12,8 +12,8 @@ var init = function(username) {
 		return;
 	}
 
-	//const server_url = "wss:chess.cloudno.de";
-	const server_url = "ws:192.168.1.100:3000";//"wss:chess.cloudno.de";
+	const server_url = "wss:chess.cloudno.de";
+	//const server_url = "ws:192.168.1.100:3000";//"wss:chess.cloudno.de";
 	var webSocket;
 
 	establishConnection();
