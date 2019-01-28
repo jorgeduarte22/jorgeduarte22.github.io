@@ -1,6 +1,8 @@
-var init = function() {
+var init = function(username) {
 	var board;
 	mensaje = $('#mensaje')
+	socketStatus = $('#socketStatus')
+	opponentStatus = $('#opponentStatus')
 
 	window.WebSocket = window.WebSocket || window.MozWebSocket;
 	if(!window.WebSocket) {
@@ -10,51 +12,60 @@ var init = function() {
 		return;
 	}
 
-	var webSocket = new WebSocket("wss:chess.cloudno.de");
+	//const server_url = "wss:chess.cloudno.de";
+	const server_url = "ws:192.168.1.100:3000";//"wss:chess.cloudno.de";
+	var webSocket;
 
-	var timerId = 0; 
-	function keepAlive() { 
-	    var timeout = 20000;  
-	    if (webSocket.readyState == webSocket.OPEN) {  
-	        webSocket.send(JSON.stringify({
-	        	request: "alive"
-	        }));  
-	    }  
-	    timerId = setTimeout(keepAlive, timeout);  
+	establishConnection();
+
+	function establishConnection() {
+		webSocket = new WebSocket(server_url);
+
+		var timerId = 0; 
+		function keepAlive() { 
+		    var timeout = 20000;  
+		    if (webSocket.readyState == webSocket.OPEN) {  
+		        webSocket.send(JSON.stringify({
+		        	request: "alive"
+		        }));  
+		    }  
+		    timerId = setTimeout(keepAlive, timeout);  
+		}
+
+		function cancelKeepAlive() {  
+		    if (timerId) {  
+		        clearTimeout(timerId);  
+		    }
+		}
+
+		webSocket.onopen = function() {
+			socketStatus.html($('<p>',
+				{text:'Estado de la conexion: Online'}
+			));
+			webSocket.send(JSON.stringify({
+				request:"register",
+				id:username
+			}));
+
+			keepAlive();
+		};
+
+		webSocket.onclose = function() {
+			console.log('Desconectado');
+			socketStatus.html($('<p>',
+				{text:'Estado de la conexion: Offline'}
+			));
+			establishConnection();
+		}
 	}
 
-	function cancelKeepAlive() {  
-	    if (timerId) {  
-	        clearTimeout(timerId);  
-	    }
-	}
-
-	webSocket.onopen = function() {
-		webSocket.send(JSON.stringify({
-			request: "getid"
-		}));
-
-		keepAlive();
-	};
-
-	webSocket.onclose = function() {
-		cancelKeepAlive();
-	}
-
-	var playerID;
+	var lastPosition;
 
 	webSocket.onmessage = function(message) {
 		var m = JSON.parse(message.data);
 		console.log("Mensaje ", m);
-		if(m.request === "getid") {
-			if(m.id === "error") {
-				mensaje.html($('<p>',
-					{text:'Demasiados jugadores. Intenta de nuevo mas tarde.'}
-				));
-			} else {
-				playerID = m.id;
-				game();
-
+		if(m.request === "register") {
+			if(m.response === "ok") {
 				var btn = document.createElement("BUTTON");
 				var t = document.createTextNode("Restart");
 				btn.addEventListener('click', function() {
@@ -65,12 +76,27 @@ var init = function() {
 				});
 				btn.appendChild(t);
 				document.body.appendChild(btn);
+				game();
+			} else {
+				mensaje.html($('<p>',
+					{text:'Error al contactar con el servidor. Intenta de nuevo mas tarde.'}
+				));
 			}
 		} else if(m.request === "update") {
-			var pos = m.position;
-			console.log("POS ", pos);
-			console.log(typeof pos);
-			board.position(pos, true);
+			lastPosition = m.position;
+			console.log("POS ", lastPosition);
+			board.position(lastPosition, true);
+		} else if(m.request === "opponent") {
+			console.log("Opponent");
+			if(m.status === "online") {
+				opponentStatus.html($('<p>',
+					{text:'Opponent status: Online'}
+				));
+			} else if(m.status === "offline") {
+				opponentStatus.html($('<p>',
+					{text:'Opponent status: Offline'}
+				));
+			}
 		}
 	}
 
@@ -98,13 +124,17 @@ var init = function() {
 
 		var onDrop = function(source, target) {
 		  // see if the move is legal
-		  webSocket.send(JSON.stringify({
-		  	request: "move",
-		  	id:playerID,
-		    source: source,
-		    target: target,
-		    promotion: 'q' // NOTE: always promote to a queen for example simplicity
-		  }));
+			if(webSocket.readyState ==WebSocket.OPEN) {
+				webSocket.send(JSON.stringify({
+				  	request: "move",
+				  	id:username,
+				    source: source,
+				    target: target,
+				    promotion: 'q' // NOTE: always promote to a queen for example simplicity
+				}));
+			} else {
+				board.position(lastPosition, true);
+			}
 		};
 
 		var cfg = {
@@ -118,5 +148,22 @@ var init = function() {
 	};
 }
 
+function deleteElements() {
+    var elem = document.getElementById("username");
+    elem.parentNode.removeChild(elem);
+    elem = document.getElementById("sendUser");
+    elem.parentNode.removeChild(elem);
+}
+
+function readUsername() {
+	$(document).ready(function() {
+		var username = document.getElementById("username").value;
+		if(username.length == 0)
+			return;
+		console.log('Usuario ', username);
+		deleteElements();
+		init(username);
+	});
+}
+
 if (typeof exports !== 'undefined') exports.Chess = Chess;
-$(document).ready(init);
