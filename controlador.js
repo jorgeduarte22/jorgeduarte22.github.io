@@ -10,7 +10,7 @@ var init = function() {
 		return;
 	}
 
-	var webSocket = new WebSocket("ws:chess.cloudno.de");
+	var webSocket = new WebSocket("wss:chess.cloudno.de");
 
 	var timerId = 0; 
 	function keepAlive() { 
