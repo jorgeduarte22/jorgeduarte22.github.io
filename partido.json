@@ -1,18 +1,11 @@
 {
 	"Jornada": "30",
-
 	"Fecha": "24/04/2019",
-
 	"Hora": "21:30",
-
 	"Pabellon": "Insular Santiago Martin",
-
 	"Público": 3742,
-
 	"Árbitros": ["Calatrava", "J.R. García Ortiz", "Arnau Padrós"],
-
 	"Parciales": [[13, 18], [26, 17], [20, 17], [20, 20]],
-
 	"Local": {
 		"Nombre": "IBEROSTAR TENERIFE",
 		"Plantilla": [
@@ -259,7 +252,6 @@
 		],
 		"Entrenador": "Vidorreta Txus"
 	},
-
 	"Visitante": {
 		"Nombre": "DIVINA SEGUROS JOVENTUT",
 		"Plantilla": [
