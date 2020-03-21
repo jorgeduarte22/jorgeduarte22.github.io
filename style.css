@@ -1,0 +1,287 @@
+body {
+	margin: 0px;
+}
+
+.board {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	grid-template-rows: auto auto auto;
+	grid-template-areas:
+		"empty0  player1 empty1"
+		"player3 center  player2"
+		"empty2  player0 empty3";
+}
+
+.factories {
+	padding: 5px;
+	background-color: Blue;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.factory {
+	background-color: Orange;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	padding: 10px;
+	margin: 5px;
+}
+
+.center {
+	grid-area: center;
+	margin: 2px;
+}
+
+.centerTiles {
+	background-color: Lime;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	height: 40px;
+}
+
+.tile {
+	background-color: Red;
+	width: 25px;
+	height: 25px;
+	margin: 5px;
+}
+
+.player {
+	background-color: brown;
+	display: grid;
+	grid-template-columns: auto auto;
+	grid-template-rows: auto auto;
+}
+
+.lines {
+	background-color: brown;
+	display: flex;
+	margin: 1px;
+	grid-area: lines;
+}
+
+.floor {
+	display: flex;
+	grid-area: floor;
+	margin: 1px;
+}
+
+.wall {
+	grid-area: wall;
+	display: flex;
+	margin: 1px;
+}
+
+.score {
+	grid-area: score;
+	display: flex;
+	margin: 1px;
+	align-items: center;
+	justify-content: center;
+	color: white;
+	font-size: 100px;
+	font-family: Courier, monospace;
+	background-color: black;
+}
+
+.player0 {
+	grid-area: player0;
+	grid-template-areas:
+		"lines wall  score"
+		"floor floor score";
+}
+
+.player0 .lines {
+	flex-direction: column;
+}
+
+.player0 .floor {
+	flex-direction: column;
+}
+
+.player0 .line {
+	flex-direction: row;
+}
+
+.player1 {
+	grid-area: player1;
+	grid-template-areas:
+		"score floor floor"
+		"score wall  lines";
+}
+
+.player1 .lines {
+	flex-direction: column-reverse;
+}
+
+.player1 .floor {
+	flex-direction: column-reverse;
+}
+
+.player1 .line {
+	flex-direction: row-reverse;
+}
+
+.player1 .score {
+	transform: rotate(180deg);
+}
+
+.player2 {
+	grid-area: player2;
+	grid-template-areas:
+		"score score"
+		"wall  floor"
+		"lines floor";
+}
+
+.player2 .lines {
+	flex-direction: row;
+}
+
+.player2 .floor {
+	flex-direction: row;
+}
+
+.player2 .line {
+	flex-direction: column-reverse;
+}
+
+.player2 .score {
+	writing-mode: vertical-lr;
+	transform: rotate(180deg);
+}
+
+.player3 {
+	grid-area: player3;
+	grid-template-areas:
+		"floor lines"
+		"floor wall"
+		"score score";
+}
+
+.player3 .lines {
+	flex-direction: row-reverse;
+}
+
+.player3 .floor {
+	flex-direction: row-reverse;
+}
+
+.player3 .line {
+	flex-direction: column;
+}
+
+.player3 .score {
+	writing-mode: vertical-lr;
+}
+
+.line {
+	background-color: cyan;
+	min-height: 40px;
+	min-width: 40px;
+	display: flex;
+	margin: 2px;
+	align-items: center;
+}
+
+.type0 {
+	background-color: grey;
+}
+
+.type1 {
+	background-color: green;
+}
+
+.type2 {
+	background-color: yellow;
+}
+
+.type3 {
+	background-color: darkviolet;
+}
+
+.type4 {
+	background-color: darkblue;
+}
+
+.type5 {
+	color: white;
+	background-color: black;
+}
+
+.selected {
+	border-style: solid;
+	border-width: 2px;
+}
+
+.player0 .wall {
+	flex-direction: column;
+}
+
+.player0 .row {
+	flex-direction: row;
+}
+
+.player1 .wall {
+	flex-direction: column-reverse;
+}
+
+.player1 .row {
+	flex-direction: row-reverse;
+}
+
+.player2 .wall {
+	flex-direction: row;
+}
+
+.player2 .row {
+	flex-direction: column-reverse;
+}
+
+.player3 .wall {
+	flex-direction: row-reverse;
+}
+
+.player3 .row {
+	flex-direction: column;
+}
+
+.row {
+	display: flex;
+}
+
+.cell {
+	min-height: 40px;
+	min-width: 40px;
+	margin: 2px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.cell0 {
+	background-color: lightgrey;
+}
+
+.cell1 {
+	background-color: lightgreen;
+}
+
+.cell2 {
+	background-color: lightyellow;
+}
+
+.cell3 {
+	background-color: violet;
+}
+
+.cell4 {
+	background-color: blue;
+}
