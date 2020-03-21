@@ -28,6 +28,8 @@ class Game {
 				self._board.finishTurn();
 				if(!self._board.isGameOver())
 					self._board.nextTurn();
+				else
+					self._board.finishGame();
 			}
 		});
 	}
@@ -142,6 +144,10 @@ class Board {
 	isGameOver() {
 		return this._players.find(p => p.isRowCompleted());
 	}
+
+	finishGame() {
+		this._players.forEach(p => p.calculateFinalScore());
+	}
 }
 
 class Player {
@@ -244,6 +250,12 @@ class Player {
 		score = this._floorLine.calculateScore();
 		this._score -= score;
 		this._score = Math.max(this._score, 0);
+		this._scoreElement.innerText = this._score;
+	}
+
+	calculateFinalScore() {
+		let score = this._wall.getExtraPoints();
+		this._score += score;
 		this._scoreElement.innerText = this._score;
 	}
 
@@ -557,6 +569,7 @@ class Wall {
 		this._cells[rowNumber][column] = tile;
 		this._cellsTurns[rowNumber][column] = 1;
 		tile.moveTo(this._cellsElements[rowNumber][column]);
+		tile.deactivateClick();
 	}
 
 	_calculateScore(i, j) {
@@ -609,15 +622,54 @@ class Wall {
 	}
 
 	_isRowCompleted(rowNumber) {
-		console.log("ISCOMPLETED ", this._cells[rowNumber], this._cells[rowNumber].filter(c => c));
 		return this._cells[rowNumber].filter(c => c).length == 5;
 	}
 
 	isRowCompleted() {
+		return this._getCompletedRows();
+	}
+
+	_getCompletedRows() {
+		let ret = 0;
 		for(let i = 0; i < 5; i++)
 			if(this._isRowCompleted(i))
-				return true;
-		return false;
+				ret += 1;
+		return ret;
+	}
+
+	_isTypeCompleted(type) {
+		let count = 0;
+		for(let i = 0; i < 5; i++)
+			count += this._cells[i].filter(c => c && c.getType() == type).length;
+		return count == 5;
+	}
+
+	_getCompletedTypes() {
+		let ret = 0;
+		for(let i = 0; i < 5; i++)
+			if(this._isTypeCompleted(i))
+				ret += 1;
+		return ret;
+	}
+
+	_isColumnCompleted(columnNumber) {
+		let count = 0;
+		for(let i = 0; i < 5; i++)
+			if(this._cells[i][columnNumber])
+				count += 1;
+		return count == 5;
+	}
+
+	_getCompletedColumns() {
+		let ret = 0;
+		for(let i = 0; i < 5; i++)
+			if(this._isColumnCompleted(i))
+				ret += 1;
+		return ret;
+	}
+
+	getExtraPoints() {
+		return this._getCompletedRows()*2+this._getCompletedColumns()*7+this._getCompletedTypes()*10;
 	}
 }
 
@@ -628,6 +680,7 @@ class Tile {
 		this._element = this._createElement(type);
 		this._type = type;
 		this._selected = false;
+		this._activeClick = !this.isStartingTile();
 	}
 
 	_createElement(type) {
@@ -635,7 +688,7 @@ class Tile {
 		e.setAttribute('class', 'tile type' + type);
 		let self = this;
 		e.addEventListener('click', function() {
-			if(!self.isStartingTile()) {
+			if(self._activeClick) {
 				let event = document.createEvent("HTMLEvents");
 				event.initEvent("gameClick", true, false);
 				event.gameTarget = self;
@@ -674,6 +727,10 @@ class Tile {
 	deselect() {
 		this._selected = false;
 		this._element.classList.remove("selected");
+	}
+
+	deactivateClick() {
+		this._activeClick = false;
 	}
 
 	isStartingTile() {
