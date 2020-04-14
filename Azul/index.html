@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Azul</title>
+    <script type="text/javascript" src="gameController.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+    <div class="menu menu1">
+      <input class="playerNameInput" placeholder="Nombre de usuario"></input>
+      <button class="joinGame" onclick=register()>Jugar</button>
+    </div>
+    <div class="menu menu2 hidden">
+      <input class="gameNameInput" placeholder="Nombre de la partida"></input>
+      <button class="joinGame" onclick=joinGame()>Unirse a partida</button>
+    </div>
+    <div id="game" class="game hidden"></div>
+  	<div id="hiddenElement" style="display:none"></div>
+  </body>
+</html>

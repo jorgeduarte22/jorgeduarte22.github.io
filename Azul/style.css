@@ -1,0 +1,347 @@
+body {
+	margin: 0px;
+	background-image: url("img/background.png");
+}
+
+.menu {
+	margin: 0px;
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.hidden {
+	display: none;
+}
+
+input {
+	height: 50px;
+	width: 300px;
+	margin: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	border-radius: 8px;
+	border: none;
+	outline: none;
+	background-color: ghostwhite;
+}
+
+button {
+	height: 50px;
+	width: 300px;
+	margin: 5px;
+	border-radius: 8px;
+	border: none;
+	color: brown;
+	background-color: ghostwhite;
+}
+
+button:focus {
+	color: ghostwhite;
+	background-color: gold;
+}
+
+button:focus {
+	outline:0;
+}
+
+.fadedOut {
+    opacity: 0;
+}
+
+.board {
+	margin: 0px;
+	position: absolute;
+	top: 50%;
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+
+	display: grid;
+	grid-template-columns: auto auto auto;
+	grid-template-rows: auto auto auto auto;
+	grid-template-areas:
+		"name0   center name1"
+		"player0 center player1"
+		"player2 center player3"
+		"name2   center name3";
+	justify-content: space-around;
+}
+
+.factories {
+	padding: 5px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.factory {
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	padding: 10px;
+	margin: 5px;
+	background-image: url("img/factory.png");
+	background-repeat:no-repeat;
+	background-position: center center;
+	background-size:contain;
+	box-shadow:	inset 0px 0px 3px brown;
+}
+
+.center {
+	grid-area: center;
+	margin: 5px;
+	place-self: center;
+}
+
+.centerTiles {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	min-height: 35px;
+    justify-content: center;
+}
+
+.tile {
+	width: 25px;
+	height: 25px;
+	margin: 5px;
+	border-radius: 5px;
+	transition: opacity 500ms;
+	will-change: opacity;
+	box-shadow:	inset 0px 0px 3px brown;
+	background-repeat:no-repeat;
+	background-position: center center;
+	background-size:contain;
+}
+
+.tile.selected {
+	border-style: solid;
+	border-width: 2px;
+	margin: 3px;
+}
+
+.factory .tile.selected {
+	border-color: brown;
+}
+
+.centerTiles .tile.selected {
+	border-color: #fafae8;
+}
+
+.player {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	grid-template-rows: auto auto;
+	padding: 3px;
+	border-radius: 10px;
+	margin: 20px;
+	grid-template-areas:
+		"lines wall  wall"
+		"floor floor score";
+	place-self: center;
+
+	background-image: url('img/player.png');
+	box-shadow:	inset 0px 0px 3px brown;
+}
+
+.playername {
+	color: #fafae8;
+	font-size: 18px;
+	font-family: Courier, monospace;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.name0 {
+	grid-area: name0;
+	text-align: left;
+}
+
+.name1 {
+	grid-area: name1;
+	text-align: right;
+}
+
+.name2 {
+	grid-area: name2;
+	text-align: left;
+}
+
+.name3 {
+	grid-area: name3;
+	text-align: right;
+}
+
+.player.selected {
+	background-image: url('img/player_selected.png');
+}
+
+.player .tile {
+	pointer-events: none;
+}
+
+.lines {
+	display: flex;
+	margin: 1px;
+	grid-area: lines;
+	flex-direction: column;
+    align-items: flex-end;
+}
+
+.floor {
+	display: flex;
+	grid-area: floor;
+	margin: 1px;
+	flex-direction: column;
+}
+
+.wall {
+	grid-area: wall;
+	display: flex;
+	margin: 1px;
+	flex-direction: column;
+}
+
+.wall .tile {
+	margin: 0;
+	height: 35px;
+	width: 35px;
+}
+
+.score {
+	grid-area: score;
+	display: flex;
+	margin: 3px;
+	align-items: center;
+	justify-content: center;
+	color: black;
+	font-size: 18px;
+	font-family: Courier, monospace;
+	border-radius: 5px;
+	justify-self: stretch;
+}
+
+.player0 {
+	grid-area: player0;
+}
+
+.player1 {
+	grid-area: player1;
+}
+
+.player2 {
+	grid-area: player2;
+}
+
+.player3 {
+	grid-area: player3;
+}
+
+.line {
+	background-color: #fafae8;
+	height: 35px;
+	display: flex;
+	margin: 2px;
+	flex-direction: row;
+	align-items: center;
+	border-radius: 5px;
+	box-shadow:	inset 0px 0px 3px brown;
+}
+
+.floorLine {
+	width: 245px;
+	flex-direction: row;
+}
+
+.line0 {
+	width: 35px;
+}
+
+.line1 {
+	width: 70px;
+}
+
+.line2 {
+	width: 105px;
+}
+
+.line3 {
+	width: 140px;
+}
+
+.line4 {
+	width: 175px;
+}
+
+.type0 {
+	background-image: url("img/tile0.png");
+}
+
+.type1 {
+	background-image: url("img/tile1.png");
+}
+
+.type2 {
+	background-image: url("img/tile2.png");
+}
+
+.type3 {
+	background-image: url("img/tile3.png");
+}
+
+.type4 {
+	background-image: url("img/tile4.png");
+}
+
+.type5 {
+	background-image: url("img/tile5.png");
+	pointer-events: none;
+}
+
+.row {
+	flex-direction: row;
+	display: flex;
+}
+
+.cell {
+	min-height: 35px;
+	min-width: 35px;
+	margin: 2px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 5px;
+	box-shadow:	inset 0px 0px 3px brown;
+	background-repeat:no-repeat;
+	background-position: center center;
+	background-size:contain;
+}
+
+.cell0 {
+	background-image: url("img/cell0.png");
+}
+
+.cell1 {
+	background-image: url("img/cell1.png");
+}
+
+.cell2 {
+	background-image: url("img/cell2.png");
+}
+
+.cell3 {
+	background-image: url("img/cell3.png");
+}
+
+.cell4 {
+	background-image: url("img/cell4.png");
+}
